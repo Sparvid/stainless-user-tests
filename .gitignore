@@ -1,0 +1,11 @@
+.bloop
+.bsp
+.metals
+.scala-build
+.vscode
+.idea
+target
+project
+stainless-stack-trace.txt
+.stainless-cache
+.DS_Store
