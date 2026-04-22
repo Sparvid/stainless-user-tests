@@ -1,25 +1,43 @@
 # Semi-structured interview questions
 
-TODO: Do we ask about issues with other verification tools? Or verification tools in general
-TODO: Do we ask both groups about previous experience with Scala, Stainless, and Formal Verification? Years and such.
+## Both groups
+
+What is your work position?
+
+How much experience do you have with:
+If yes, How many years?
+For what purpose?
+
+* Programming
+* Scala
+* Functional programming
+* Verification
+* Stainless
+
 
 ## Experienced users
 
-For what task did you previously use Stainless?
+Talk about / Can you show me a project where you used Stainless?
 
-During which part of the project? (beginning, specification, testing, ...)
+During which part of the project? (beginning, specification, testing, ...) 
+And which parts did you verify?
 
-Rate the level of usability of the tool (1-5), according to your experience:
+What did you think was good about Stainless? 
+What was easy to verify?
 
-What usability shortcomings do you think Stainless exhibits?
+What did you think was challenging or difficult about using Stainless?
 
-How can your described shortcomings be mitigated?
+Are there any features that you thought were missing?
+
+Are there features from other verification tools that you think could be useful in Stainless?
 
 ## Testers
 
-Did you experience any major obstacles? What were they?
+What did you think was good about Stainless? 
+What was easy to verify?
 
-Did you feel you were missing some functionality? Specifically usability-related. But possibly technical as well.
+What did you think was challenging or difficult about using Stainless?
 
-How would you rate its usability (1-5)? What usability challenges did you encounter? What do you recommend to improve its usability?
+Are there any features that you thought were missing?
 
+Are there features from other verification tools that you think could be useful in Stainless?

@@ -2,12 +2,12 @@ import stainless.annotation.*
 import stainless.lang.*
 
 // Task 2: Verify this function with Stainless
-def sumN2(n: BigInt): BigInt = {
-    var i: BigInt = n
+def sumN(n: BigInt): BigInt = {
+    var i: BigInt = 0
     var sum: BigInt = 0
-    while (i > 0) {
+    while (i <= n) {
         sum += i
-        i -= 1
+        i += 1
     }
     sum
 }.ensuring(_ >= 0)
