@@ -82,7 +82,7 @@ And then try to verify it with Stainless. Then the output should look like:
 
 We can look at the warnings above the summary to see what counter-example Stainless has found. In this case, we see that x -> -1 causes the postcondition to fail. 
 
-TODO: assertions
+Another useful way of debugging is to use assertions by writing `assert(condition)`. For example, one might want to check that a specific property holds at a certain point in the program. The success or failure of the assertion will be reported like other properties by Stainless. It may also help Stainless complete proofs, since once an assertion is proven, it effectively becomes an assumption for the rest of the proof.
 
 Now, suppose we know that the input to the `square` function is always at least 2. In that case, we could attempt to prove additional properties such as `res > x`.
 
