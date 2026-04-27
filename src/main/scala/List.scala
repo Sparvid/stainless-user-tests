@@ -2,7 +2,7 @@ import stainless.lang.*
 import stainless.collection.*
 import stainless.annotation.*
 
-
+// Task 3: Verify the function with Stainless
 object SortedInsert {
     
   /** Returns true iff the list is sorted in increasing order. */
@@ -22,6 +22,5 @@ object SortedInsert {
         if (x <= h) Cons(h, Cons(x, t))
         else        Cons(h, insert(x, t))
     }
-  }.ensuring { res => isSorted(res) }
-
+  }.ensuring{res => isSorted(res)}
 }

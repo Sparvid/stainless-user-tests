@@ -1,6 +1,7 @@
 # Tutorial
-Done in person, with Arvid as help.
-I'm assuming everything is installed.
+
+This tutorial is meant to prepare participants for the user tasks. It is done in person, with Arvid as help.
+
 
 ## Pre and Post-conditions
 
@@ -40,6 +41,48 @@ If you run stainless on this file with the command `stainless src/tutorial/scala
 ```
 
 The summary shows that the postcondition of the `square` function has been proven valid. You can see other details, such as the time taken to verify the property, the solver used, and the line number where the property is defined.
+
+If verification is not successful, Stainless will report failed properties in the summary, marked red. And also generate warnings, which might contain helpful information for debugging, such as a counter-example. For example, if we introduce a bug into the code by inverting one of the factors.
+
+```scala
+def square(x: BigInt): BigInt = {
+  x * -x
+}.ensuring(res => res >= 0)
+```
+And then try to verify it with Stainless. Then the output should look like:
+
+
+```shell
+[  Info  ] Finished compiling                                       
+[  Info  ] Preprocessing finished                                   
+[  Info  ] Finished lowering the symbols                            
+[  Info  ] Finished generating VCs                                  
+[  Info  ] Starting verification...
+[  Info  ]  Verified: 0 / 1
+[Warning ]  - Result for 'postcondition' VC for square @6:7:
+[Warning ] x * -x >= BigInt("0")
+[Warning ] src/main/scala/Tutorial.scala:6:7:  => INVALID
+             def square(x: BigInt): BigInt = {
+                 ^
+[Warning ] Found counter-example:
+[Warning ]   x: BigInt -> BigInt("-1")
+[  Info  ]  Verified: 0 / 1
+[  Info  ] Done in 2.23s
+[  Info  ]   ┌───────────────────┐
+[  Info  ] ╔═╡ stainless summary ╞═════════════════════════════════════════════════════════════════════════════════╗
+[  Info  ] ║ └───────────────────┘                                                                                 ║
+[  Info  ] ║ src/main/scala/Tutorial.scala:6:7:           square   postcondition     invalid    U:smt-cvc5    0.1  ║
+[  Info  ] ╟┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄╢
+[  Info  ] ║ total: 1    valid: 0    (0 from cache, 0 trivial) invalid: 1    unknown: 0    time:    0.11           ║
+[  Info  ] ╚═══════════════════════════════════════════════════════════════════════════════════════════════════════╝
+[  Info  ] Verification pipeline summary:
+[  Info  ]   smt-cvc5, smt-z3, non-batched
+[  Info  ] Shutting down executor service.
+```
+
+We can look at the warnings above the summary to see what counter-example Stainless has found. In this case, we see that x -> -1 causes the postcondition to fail. 
+
+TODO: assertions
 
 Now, suppose we know that the input to the `square` function is always at least 2. In that case, we could attempt to prove additional properties such as `res > x`.
 
@@ -131,34 +174,6 @@ def loop(n: BigInt): BigInt = {
    }).invariant(res >= 0)
    res  
 }.ensuring(_ >= 0)
-```
-## Structural induction and @induct
-
-Stainless can be used to prove properties of data structures, such as the List datatype defined in a Stainless collection. Here we want to verify that equality is symmetrical for this List datatype. TODO: this is too easy, verifies without guidance. But I cannot find an appropriately difficult relation to verify. All the tools are given here though.
-
-```scala
-def equality[T](l: List[T], l2: List[T]): Unit = {  
- 
-}.ensuring((l == l2) ==> (l2 == l))
-```
-
-We can do this by structural induction over one of the the list arguments, by providing a base case, and a recursive case where the induction hypothesis will help Stainless complete the proof. We also add a decreases annotation on the list we induct over so that Stainless can verify termination.
-
-```scala
-def equality[T](l: List[T], l2: List[T]): Unit = {  
-   decreases(l)  
-   (l, l2) match  
-     case (Nil(), l2) => ()  
-     case (Cons(x, xs), l2) => equality(xs, l2)  
-}.ensuring((l == l2) ==> (l2 == l))
-```
-
-An alternative way is to simply annotate the function with `@annotate`, and Stainless will attempt a proof by structural induction. In this case it is successful!
-
-```scala
-@induct
-def equality[T](l: List[T], l2: List[T]): Unit = {  
-}.ensuring((l == l2) ==> (l2 == l))
 ```
 
 End of tutorial
