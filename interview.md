@@ -20,9 +20,6 @@ Talk about or show me a project where you used Stainless.
 During which part of the project? (beginning, specification, testing, ...) 
 Which parts did you verify?
 
-What did you think was good about Stainless? 
-What was easy to verify?
-
 ## Both groups
 
 What did you think was good about Stainless? 
@@ -33,3 +30,6 @@ What did you think was challenging or difficult about using Stainless?
 Are there any features that you thought were missing?
 
 Are there features from other verification tools that you think could be useful in Stainless?
+
+TODO: add to report
+Are there IDE features that you think could be useful in Stainless?
