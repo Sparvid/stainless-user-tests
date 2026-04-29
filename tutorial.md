@@ -3,7 +3,7 @@
 This tutorial is meant to prepare participants for the user tasks. It is done in person, with Arvid as help.
 
 
-## Pre and Post-conditions
+## Postconditions
 
 Stainless takes Scala programs as input. Properties that you want to verify are expressed as **annotations** in the code. These annotations are converted into runtime assertions when the program is executed, meaning that annotated programs can still be compiled and run like regular Scala programs. Let's see how this works with a simple example. The file `Tutorial.scala` under `src/tutorial/scala` should be opened to right in a split window. We start by defining a function that computes the square of an integer. Copy this code to the Scala file.
 ```scala
@@ -41,6 +41,8 @@ If you run stainless on this file with the command `stainless src/tutorial/scala
 ```
 
 The summary shows that the postcondition of the `square` function has been proven valid. You can see other details, such as the time taken to verify the property, the solver used, and the line number where the property is defined.
+
+## Debugging
 
 If verification is not successful, Stainless will report failed properties in the summary, marked red. And also generate warnings, which might contain helpful information for debugging, such as a counter-example. For example, if we introduce a bug into the code by inverting one of the factors.
 
@@ -82,8 +84,70 @@ And then try to verify it with Stainless. Then the output should look like:
 
 We can look at the warnings above the summary to see what counter-example Stainless has found. In this case, we see that x -> -1 causes the postcondition to fail. 
 
-TODO: integrate into the example
 Another useful way of debugging is to use assertions by writing `assert(condition)`. For example, one might want to check that a specific property holds at a certain point in the program. The success or failure of the assertion will be reported like other properties by Stainless. It may also help Stainless complete proofs, since once an assertion is proven, it effectively becomes an assumption for the rest of the proof.
+
+Here is an example of how an assert can be used for debugging. Copy the code below and try to verify it wihtout uncommenting anything.
+
+```scala
+object AssertExample {
+ 
+  // Returns the larger of two integers
+  @opaque
+  def max(a: BigInt, b: BigInt): BigInt = {
+    if (a >= b) a else b
+  }
+ 
+  // Returns the largest of three integers
+  def max3(a: BigInt, b: BigInt, c: BigInt): BigInt = {
+    val m = max(a, b)
+    max(m, c)
+  }.ensuring(res => res >= a && res >= b && res >= c)
+}
+```
+
+The `@opaque` annotation hides the body of the `max` function from verification, and is used in this case only for the sake of the example. The postcondition of `max3` fails. To check if Stainless can verify that the first call to `max` in `max3`, or rather the property that we want `max` to fulfill, we can add an `assert` statement and run it again. 
+
+```scala
+object AssertExample {
+ 
+  // Returns the larger of two integers
+  @opaque
+  def max(a: BigInt, b: BigInt): BigInt = {
+    if (a >= b) a else b
+  }
+ 
+  // Returns the largest of three integers
+  def max3(a: BigInt, b: BigInt, c: BigInt): BigInt = {
+    val m = max(a, b)
+    assert(m >= a && m >= b)
+    max(m, c)
+  }.ensuring(res => res >= a && res >= b && res >= c)
+}
+```
+
+We now see that the assertion fails, which means that Stainless cannot verify this property. To fix this, we add the ensuring clause for `max`, which guarantees to Stainless that it holds. 
+
+```scala
+object AssertExample {
+ 
+  // Returns the larger of two integers
+  @opaque
+  def max(a: BigInt, b: BigInt): BigInt = {
+    if (a >= b) a else b
+  }.ensuring(res => res >= a && res >= b)
+ 
+  // Returns the largest of three integers
+  def max3(a: BigInt, b: BigInt, c: BigInt): BigInt = {
+    val m = max(a, b)
+    assert(m >= a && m >= b)
+    max(m, c)
+  }.ensuring(res => res >= a && res >= b && res >= c)
+}
+```
+
+Then, `max3` is successfully verified! And the `assert` statement can be removed, as it is not needed anymore.
+
+## Preconditions
 
 Now, suppose we know that the input to the `square` function is always at least 2. In that case, we could attempt to prove additional properties such as `res > x`.
 
