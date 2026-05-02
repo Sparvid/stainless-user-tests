@@ -1,20 +1,22 @@
 import stainless.annotation.* 
 import stainless.lang.*
 
-/* Task 2: Verify the postcondition using Stainless
-   That means running Stainless on the function and proving the postcondition valid.
-   You may not modify the existing code; function body or postcondition.
-   You may write auxiliary functions or lemmas, and freely add verification constructs (e.g. require, ensure, decreases, invariant, assert, ...)
+/* Task 2: Add helper specification in order to verify the existing postcondition of the sumN
+function using Stainless
 
-   You may only modify this file.
-   You may access the tutorial freely, but no other files.
-   You may not use other programs or extensions, such as Copilot.
-   You may not access the internet.
-   
-   You have 20 minutes to spend on this task.
-   You may ask Arvid clarifying questions about the task, but not questions regarding solutions.
-   Please voice your thought process out loud: How you percieve the problem, what solutions you're considering, etc.
-   If you are completely stuck for 30 seconds, you will get a hint for how to proceed.
+  Time limit: 20 minutes
+
+   When running Stainless on the function, all the properties in the summary should be marked green.
+   You may not modify the function body, signature or the postcondition, but you may write auxiliary functions or lemmas, and freely add verification constructs (e.g. require, decreases, invariant, assert, ...)
+
+   The entirety of your solution should be in this file. 
+
+   You have access to the tutorial and Stainless documentation (open in the browser), but no other
+   internet resources, programs or extensions, such as Copilot. You may ask clarifying questions to
+   the interviewer about the task, but not regarding the solution.
+
+   Please voice your thought process out loud: How you perceive the problem, what solutions you're
+   considering, and generally anything that crosses your mind while working on the problem.
 
    Enjoy!
  */ 
