@@ -26,4 +26,4 @@ def sumN(n: BigInt): BigInt = {
         i += 1
     }
     sum
-}.ensuring(_ >= 0)
+}.ensuring(res => res >= 0)

@@ -19,6 +19,7 @@ import stainless.lang.*
    Enjoy!
  */ 
 def factorial(n: BigInt): BigInt = {
+        require(n >= 0)
         if n == 0 then BigInt(0)
         else n * factorial(n-1)
-}.ensuring(_ >= 0)
+}.ensuring(res => res >= 0)
